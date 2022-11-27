@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Contact's"
+        android:textAlignment="center"
+        android:background="@color/black"
+        android:textColor="@color/white"
+        android:textSize="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:onClick="get"
+        android:text="Select Contact's"
+
+        />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listview"
+        />
+
+
+
+
+</LinearLayout>
+
+
+
+
+
+
+
+
+
+
+#################################
+
+
+
+
+
+
+
+
+package com.example.my_contact;
+import androidx.appcompat.app.AppCompatActivity;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+public class MainActivity extends AppCompatActivity{
+    ListView l1;
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        l1=(ListView)findViewById(R.id.listview);
+    }
+    public void get(View v){
+        Cursor cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null, null);
+        startManagingCursor(cursor);
+        String[] from = new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone._ID};
+        int [] to = {android.R.id.text1,android.R.id.text2};
+        SimpleCursorAdapter simpleCursorAdapter=new SimpleCursorAdapter(this,android.R.layout.simple_list_item_2,cursor,from,to);
+        l1.setAdapter(simpleCursorAdapter);
+        l1.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+    }
+}
+
+
+
+
+
+
+
+
+
+##############
+
+
+
+manifest
+
+
+
+
+    <uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
